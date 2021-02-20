@@ -18,14 +18,16 @@ public class FrequencyReducer extends Reducer<Text, IntWritable, Text, Text> {
         for (IntWritable val : values) {
             sum += val.get();
         }
-        String value = getLanguageSelection(context) + tabCharachter + (getLetterFrequency(sum, getTotalNumberOfLetters(context)));
+        String floatResult = getLetterFrequency(sum, getTotalNumberOfLetters(context));
+        String value = getLanguageSelection(context) + tabCharachter + floatResult;
         result.set(value);
         context.write(key, result);
+
     }
 
     private String getLetterFrequency(Integer value, Integer totalNumberOfLetters){
         DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(6);
+        df.setMaximumFractionDigits(8);
         Float result = (float)value/(float)totalNumberOfLetters;
         return df.format(result);
     }
